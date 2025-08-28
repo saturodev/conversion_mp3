@@ -2,7 +2,7 @@ build:
 	docker compose build
 
 start:
-	docker-compose up -d --build
+	docker compose up -d --build
 	
 up:
 	docker compose up -d
