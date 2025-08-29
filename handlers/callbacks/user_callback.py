@@ -14,6 +14,7 @@ async def process_show_id_callback(
     callback_query: CallbackQuery,
     state: FSMContext,
 ):
+
     # Снимаем белую подсветку сразу
     await callback_query.answer()
     await callback_query.message.delete()
@@ -22,6 +23,10 @@ async def process_show_id_callback(
     video_id = get_url(url)
     music = get_music_by_url_id(video_id)
     if not music:
+        # Сообщение о загрузке
+        loading_msg = await callback_query.message.answer(
+            "⏳ Скачиваю... Пожалуйста, подождите"
+        )
         mp3_url = video_id[0]
 
         try:
@@ -36,7 +41,7 @@ async def process_show_id_callback(
                 1,  # это file_id
                 video_id[1],
             )
-
+            await loading_msg.delete()
         except TelegramBadRequest:
             # если не получилось → даём кнопку "Скачать"
             keyboard = InlineKeyboardMarkup(
@@ -57,13 +62,14 @@ async def process_show_id_callback(
                 0,  # это ссылка
                 video_id[1],
             )
-
+            await loading_msg.delete()
     else:
         file_or_url = music[3]
         is_file_id = music[4]
 
         if is_file_id == 1:
             await callback_query.message.answer_audio(audio=file_or_url)
+
         else:
             keyboard = InlineKeyboardMarkup(
                 inline_keyboard=[
