@@ -3,4 +3,6 @@ services:
   bot:
     build: .
     restart: always
+    volumes:
+    - ./data:/app/data
     
