@@ -11,7 +11,7 @@ def get_url(url):
     match = YOUTUBE_REGEX.search(url)
     video_id = match.group(1)
     url = config.RAPID_URL
-    querystring = {"id": {video_id}}
+    querystring = {"id": video_id}
     headers = {
         "x-rapidapi-key": config.RAPID_KEY,
         "x-rapidapi-host": config.RAPID_HOST,
