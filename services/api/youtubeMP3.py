@@ -18,7 +18,7 @@ def get_url(url):
     }
     response = requests.get(url, headers=headers, params=querystring)
     result = response.json()
-    get_link = result["link"]
+    get_link = result.get("link")
     return get_link, video_id
 
 
@@ -30,7 +30,14 @@ def get_youtube(url):
     data = response.json()
     snippet = data["items"][0]["snippet"]
     title = snippet["title"]
-    thumbnail = snippet["thumbnails"]["maxres"]["url"]
+    thumbnails = snippet["thumbnails"]
+    thumbnail = (
+        thumbnails.get("maxres", {}).get("url")
+        or thumbnails.get("standard", {}).get("url")
+        or thumbnails.get("high", {}).get("url")
+        or thumbnails.get("medium", {}).get("url")
+        or thumbnails.get("default", {}).get("url")
+    )
     return thumbnail, title
 
 
