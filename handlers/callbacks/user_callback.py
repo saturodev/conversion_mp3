@@ -37,7 +37,7 @@ async def process_show_id_callback(
             add_to_music(
                 callback_query.from_user.id,
                 msg.audio.title,
-                msg.audio.file_unique_id,
+                msg.audio.file_id,
                 1,  # это file_id
                 video_id[1],
             )
