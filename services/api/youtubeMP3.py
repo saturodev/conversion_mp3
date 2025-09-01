@@ -1,6 +1,7 @@
 import requests
 import re
 import config
+import logging
 
 YOUTUBE_REGEX = re.compile(
     r"(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})"
@@ -18,6 +19,7 @@ def get_url(url):
     }
     response = requests.get(url, headers=headers, params=querystring)
     result = response.json()
+    logging.info(result)
     get_link = result.get("link")
     return get_link, video_id
 
